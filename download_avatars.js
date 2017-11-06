@@ -1,7 +1,8 @@
 const request = require('request');
 const fs = require('fs');
-const TOKEN = require('./secrets').GITHUB_TOKEN;
+const TOKEN = require('./secrets').GITHUB_TOKEN; // github token
 const chalk = require('chalk');
+
 console.log(chalk.green("*******************************************"))
 console.log(chalk.green("* Welcome to the GitHub Avatar Downloader *"))
 console.log(chalk.green("*******************************************"))
@@ -21,6 +22,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 function downloadImageByURL(url, path){
+  // begin downloading image from given url
   request.get(url)
   .on('error', (error) => {
     throw err;
@@ -34,13 +36,11 @@ function downloadImageByURL(url, path){
 }
 
 
-downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
 getRepoContributors("jquery", "jquery", function(err, result) {
-  console.log("Errors:", err);
-  let parsedResult = JSON.parse(result);
-  for(let userID in parsedResult){
+  let parsedResult = JSON.parse(result); // Parse JSON result
+  for(let userID in parsedResult){ // find UserID
     let user = parsedResult[userID];
-    console.log(user.avatar_url);
+    downloadImageByURL(user.avatar_url, `avatars/${user.login}.jpg`);
   }
 });
 
