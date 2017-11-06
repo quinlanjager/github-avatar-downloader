@@ -1,7 +1,13 @@
+// load dependencies
 const request = require('request');
 const fs = require('fs');
 const TOKEN = require('./secrets').GITHUB_TOKEN; // github token
 const chalk = require('chalk');
+
+// load commandline arguments
+
+const REPOOWNER = process.argv[2];
+const REPONAME = process.argv[3];
 
 console.log(chalk.green("*******************************************"))
 console.log(chalk.green("* Welcome to the GitHub Avatar Downloader *"))
@@ -36,8 +42,8 @@ function downloadImageByURL(url, path){
 }
 
 
-getRepoContributors("jquery", "jquery", function(err, result) {
-  let parsedResult = JSON.parse(result); // Parse JSON result
+getRepoContributors(REPOOWNER, REPONAME, function(err, result) {
+  const parsedResult = JSON.parse(result); // Parse JSON result
   for(let userID in parsedResult){ // find UserID
     let user = parsedResult[userID];
     downloadImageByURL(user.avatar_url, `avatars/${user.login}.jpg`);
