@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/quinlanjager/github-avatar-downloader#readme",
   "dependencies": {
+    "chalk": "^2.3.0",
     "request": "^2.83.0"
   }
 }
