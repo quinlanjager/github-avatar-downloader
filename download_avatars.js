@@ -1,5 +1,5 @@
 const request = require('request');
-const TOKEN = require('secrets').GITHUB_TOKEN;
+const TOKEN = require('./secrets').GITHUB_TOKEN;
 const chalk = require('chalk');
 console.log(chalk.green("*******************************************"))
 console.log(chalk.green("* Welcome to the GitHub Avatar Downloader *"))
@@ -22,5 +22,9 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 getRepoContributors("jquery", "jquery", function(err, result) {
   console.log("Errors:", err);
-  console.log("Result:", result);
+  let parsedResult = JSON.parse(result);
+  for(let userID in parsedResult){
+    let user = parsedResult[userID];
+    console.log(user.avatar_url);
+  }
 });
