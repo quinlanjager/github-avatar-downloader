@@ -58,3 +58,5 @@ typings/
 .env
 
 secrets.js
+
+avatars/
