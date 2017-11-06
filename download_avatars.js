@@ -1,8 +1,9 @@
 // load dependencies
+require('dotenv').config();
 const request = require('request');
 const fs = require('fs');
 const chalk = require('chalk'); // for styling
-const token = require('./secrets').GITHUB_TOKEN; // github token
+const token = process.env.GITHUB_TOKEN; // github token
 
 // load commandline arguments
 const repoOwner = process.argv[2];
