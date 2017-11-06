@@ -9,17 +9,13 @@ const chalk = require('chalk');
 const REPOOWNER = process.argv[2];
 const REPONAME = process.argv[3];
 
-console.log(chalk.green("*******************************************"))
-console.log(chalk.green("* Welcome to the GitHub Avatar Downloader *"))
-console.log(chalk.green("*******************************************"))
-
 
 function getRepoContributors(repoOwner, repoName, cb) {
   const options = {
     url : `https://api.github.com/repos/${repoOwner}/${repoName}/contributors`,
     headers : {
-      'User-Agent' : 'request',
-      'Authorization' : `token ${TOKEN}`
+    'User-Agent' : 'request',
+    'Authorization' : `token ${TOKEN}`
     }
   }
   request(options, (err, response, body) => {
@@ -41,12 +37,18 @@ function downloadImageByURL(url, path){
   });
 }
 
+console.log(chalk.green("*******************************************"))
+console.log(chalk.green("* Welcome to the GitHub Avatar Downloader *"))
+console.log(chalk.green("*******************************************"))
 
-getRepoContributors(REPOOWNER, REPONAME, function(err, result) {
-  const parsedResult = JSON.parse(result); // Parse JSON result
-  for(let userID in parsedResult){ // find UserID
-    let user = parsedResult[userID];
-    downloadImageByURL(user.avatar_url, `avatars/${user.login}.jpg`);
-  }
-});
-
+if(!REPOOWNER || !REPONAME){
+  console.log(chalk.red('Please input a repository owner and a repository name using the following format:\n'), '<repo owner>', '<repo name>');
+} else {
+  getRepoContributors(REPOOWNER, REPONAME, function(err, result) {
+    const parsedResult = JSON.parse(result); // Parse JSON result
+    for(let userID in parsedResult){ // find UserID
+      let user = parsedResult[userID];
+      downloadImageByURL(user.avatar_url, `avatars/${user.login}.jpg`);
+    }
+  });
+}
