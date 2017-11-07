@@ -39,16 +39,14 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 // sort objects numerically, descending
-function sortObjectDesc(object){
+function sortObject(object, sortFunc){
   const sorted = [];
   const resultObj = {};
   for(const key in object){
     const group = [key, object[key]]
     sorted.push(group);
   }
-  sorted.sort(function(a,b){
-    return b[1] - a[1];
-  });
+  sorted.sort(sortFunc);
   sorted.forEach((keyPair) => {
     resultObj[keyPair[0]] = keyPair[1];
   });
@@ -56,7 +54,9 @@ function sortObjectDesc(object){
 }
 
 function printStarredRepos(collectionOfStarredRepos){
-  const sortedStarredRepos = sortObjectDesc(starredRepos);
+  const sortedStarredRepos = sortObject(starredRepos, (a,b) => {
+    return b[1] - a[1];
+  });
   const keyIndex = [];
   // buidling index for looping purposes
   for(const name in sortedStarredRepos){

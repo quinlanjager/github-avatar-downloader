@@ -53,7 +53,7 @@ if(!token){
 } else {
    // Check if 'avatars exists'
   try{
-    fs.accessSync('avatars');
+    fs.accessSync('avatars'); // synchronous because we need to check before anything else can run...
   } catch (err) {
     if(err){
       fs.mkdir('avatars');
