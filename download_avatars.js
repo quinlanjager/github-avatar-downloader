@@ -39,12 +39,7 @@ function downloadImageByURL(url, path){
     console.log(error);
     throw error;
   })
-  .pipe(fs.createWriteStream(path)).on('error', (error) => {
-    // file foldern not found
-    if(error.code === "ENOENT"){
-      fs.mkdir('avatars');
-    }
-  });
+  .pipe(fs.createWriteStream(path));
 }
 
 console.log(chalk.green('Welcome to the GitHub Avatar Downloader'));
@@ -56,6 +51,14 @@ if(!token){
 } else if(!repoOwner || !repoName){
   console.log(chalk.red('Required argument missing. Input repository owner and repository name in the following format:\n'), '<repo owner>', '<repo name>');
 } else {
+   // Check if 'avatars exists'
+  try{
+    fs.accessSync('avatars');
+  } catch (err) {
+    if(err){
+      fs.mkdir('avatars');
+    }
+  }
   console.log(chalk.green('Downloading GitHub avatars'));
   getRepoContributors(repoOwner, repoName, function(err, result) {
     if(err){
